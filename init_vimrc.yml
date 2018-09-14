@@ -1,0 +1,3 @@
+---
+- name: vimrc push
+  copy: src=vimrc dest=/etc/vimrc force=yes

@@ -1,0 +1,9 @@
+---
+- name: push pub key for root on jumper
+  authorized_key: "user=root key={{ lookup('file', 'jumper01_id_rsa.pub') }}"
+- name: push pub key for root on jumpserver
+  authorized_key: "user=root key={{ lookup('file', 'jumpserver_id_rsa.pub') }}"
+- name: push pub key for root on monitor01
+  authorized_key: "user=root key={{ lookup('file', 'monitor01_id_rsa.pub') }}"
+- name: push pub key for root on monitor02
+  authorized_key: "user=root key={{ lookup('file', 'monitor02_id_rsa.pub') }}"

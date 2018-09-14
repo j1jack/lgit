@@ -1,0 +1,4 @@
+---
+ook
+- name: push history setting file
+  copy: src=history.sh dest=/etc/profile.d/ mode=0755

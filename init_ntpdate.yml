@@ -1,0 +1,9 @@
+---
+- name: chkconfig stop
+  shell: chkconfig ntpd off
+
+- name: stop ntpd service
+  service: name=ntpd state=stopped
+
+- name: add ntpdate cron task
+  cron: name=/usr/sbin/ntpdate minute=*/20 job="/usr/sbin/ntpdate ntp1.cloud.aliyuncs.com ntp7.cloud.aliyuncs.com >/dev/null 2>&1"

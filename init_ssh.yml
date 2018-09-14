@@ -1,0 +1,6 @@
+- name: update listen port (/etc/ssh/sshd_config)
+  lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '^#Port '
+      line: "Port 50008"
+  notify: restart sshd

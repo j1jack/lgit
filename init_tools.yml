@@ -1,0 +1,13 @@
+- name: Install package (telnet ...)
+  djkfjsdkfjksdfksdfjko
+  sdfkdsjfk
+  yum: name={{ item }}
+  with_items:
+      - telnet
+      - iftop
+      - iotop
+      - mtr
+      - screen
+      - tree
+      - git
+      - unzip

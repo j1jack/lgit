@@ -1,0 +1,43 @@
+---
+# xm for running process
+- name: create xm
+  user: name=xm
+
+- name: sudo set, add xm
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^xm "
+    insertafter: "^root"
+    line: "xm ALL=(ALL) NOPASSWD: ALL"
+
+- name: push pub key for xm
+  authorized_key: "user=xm key={{ lookup('file', '/home/xm/.ssh/id_rsa.pub') }}"
+
+- name: push private key to dest
+  copy:
+    src: /home/xm/.ssh/id_rsa
+    dest: /home/xm/.ssh/id_rsa
+    mode: 600
+    owner: xm
+    group: xm
+
+# xmdev
+- name: create xmdev
+  user: name=xmdev
+
+- name: sudo set, add xmdev
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^xmdev "
+    insertafter: "^root"
+    line: "xmdev ALL=(ALL) NOPASSWD: ALL"
+
+- name: push pub key for xmdev
+  authorized_key: "user=xmdev key={{ lookup('file', '/home/xmdev/.ssh/id_rsa.pub') }}"
+
+
+
+
+
+
+

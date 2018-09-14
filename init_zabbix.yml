@@ -1,0 +1,59 @@
+## install zbx agent, centos7
+- name: push zbx repo file, for centos7
+  copy: src=zabbix-release-3.4-2.el7.noarch.rpm dest=/tmp/ force=yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
+
+- name: install zbx repo file, for centos7
+  yum: name=/tmp/zabbix-release-3.4-2.el7.noarch.rpm state=present
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
+
+- name: install zbx agent by yum, for centos7
+  yum: name=zabbix-agent state=present disable_gpg_check=yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
+
+## install zbx agent, centos6
+- name: push zbx repo file, for centos6
+  copy: src=zabbix-release-3.4-1.el6.noarch.rpm dest=/tmp/ force=yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
+
+- name: install zbx repo file, for centos6
+  yum: name=/tmp/zabbix-release-3.4-1.el6.noarch.rpm state=present
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
+
+- name: install zbx agent by yum, for centos6
+  yum: name=zabbix-agent state=present disable_gpg_check=yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
+
+## config
+- name: Create zbx-log dir
+  file: path=/data/logs/zabbix state=directory owner=zabbix group=zabbix mode=0755
+
+- name: push zabbix-agentd.conf
+  copy: src=zabbix_agentd.conf dest=/etc/zabbix/ force=yes
+
+- name: push zbx-agent config file
+  copy: src={{ item }} dest=/etc/zabbix/zabbix_agentd.d/ force=yes
+  with_items:
+  - tcp_status.conf
+  - cetus_conn.conf
+  - pgsql_conn.conf
+  - userparameter_mysql.conf
+  notify:
+      - restart zabbix-agent
+
+- name: ensure dir exist(/etc/zabbix/scripts/)
+  file: path=/etc/zabbix/scripts state=directory
+
+- name: push scripts(xxx.sh)
+  copy: src={{ item }} dest=/etc/zabbix/scripts/ force=yes mode=0755
+  with_items:
+  - tcp_status.sh
+  - cetus_conn_v4_admin.sh
+  - cetus_conn_v5_account_base.sh
+  - pgsql_conn.sh
+  notify:
+      - restart zabbix-agent
+
+- name: push file(Index.xml) for mysql monitor
+  copy: src=Index.xml dest=/usr/share/mysql/charsets/Index.xml force=yes
+
